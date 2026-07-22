@@ -373,5 +373,56 @@ function joinNow(){
 
 </script>
 
+  <script>
+        // Countdown logic (updates the text every second; does not auto-redirect on its own)
+        (function () {
+            let secondsLeft = 30;
+            const countEl = document.getElementById("count");
+
+            const interval = setInterval(() => {
+                secondsLeft--;
+                if (countEl) {
+                    countEl.textContent = "Will be redirect in " + secondsLeft + " seconds ....";
+                }
+                if (secondsLeft <= 0) {
+                    clearInterval(interval);
+                    if (countEl) {
+                        countEl.textContent = "Redirecting...";
+                    }
+                }
+            }, 1000);
+        })();
+
+        // Telegram button click handler
+        const telegramBtn = document.getElementById("telegramBtn");
+        if (telegramBtn) {
+            telegramBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                const bridgePageLink = this.href;
+
+                // Meta Pixel Event Tracking
+                fbq('track', 'Contact', {
+                    content_name: 'Telegram Community',
+                    button_click: true
+                });
+
+                setTimeout(() => {
+                    window.location.href = bridgePageLink;
+                }, 300);
+            });
+        }
+
+        // Page toggle helper for Privacy Policy / Terms pages
+        function showPage(pageId) {
+            const pages = ['main-landing', 'privacy-page', 'terms-page'];
+            pages.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.toggle('hidden', id !== pageId);
+                }
+            });
+        }
+    </script>
+  
 </body>
 </html>>>
