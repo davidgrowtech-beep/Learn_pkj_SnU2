@@ -238,11 +238,11 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1980521145969136');
+fbq('init', '1001666459580080');
 fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1980521145969136&ev=PageView&noscript=1"
+src="https://www.facebook.com/tr?id=1001666459580080&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
 <div class="container">
@@ -373,56 +373,52 @@ function joinNow(){
 
 </script>
 
-  <script>
-        // Countdown logic (updates the text every second; does not auto-redirect on its own)
-        (function () {
-            let secondsLeft = 30;
-            const countEl = document.getElementById("count");
+<script>
+const TELEGRAM_URL = "https://t.me/+WBurdhcK6C43MDQ1";
 
-            const interval = setInterval(() => {
-                secondsLeft--;
-                if (countEl) {
-                    countEl.textContent = "Will be redirect in " + secondsLeft + " seconds ....";
-                }
-                if (secondsLeft <= 0) {
-                    clearInterval(interval);
-                    if (countEl) {
-                        countEl.textContent = "Redirecting...";
-                    }
-                }
-            }, 1000);
-        })();
+function trackAndRedirect(event) {
+  if (event) event.preventDefault();
 
-        // Telegram button click handler
-        const telegramBtn = document.getElementById("telegramBtn");
-        if (telegramBtn) {
-            telegramBtn.addEventListener("click", function (e) {
-                e.preventDefault();
-                const bridgePageLink = this.href;
+  if (typeof fbq !== 'undefined') {
+    fbq('track', 'Lead', {
+      value: '0.00',
+      currency: 'INR',
+      predicted_ltv: '0.00',
+    });
+  } else {
+    console.log('Pixel not loaded, but redirecting...');
+  }
 
-                // Meta Pixel Event Tracking
-                fbq('track', 'Contact', {
-                    content_name: 'Telegram Community',
-                    button_click: true
-                });
+  setTimeout(function () {
+    window.location.href = TELEGRAM_URL;
+  }, 300);
+}
 
-                setTimeout(() => {
-                    window.location.href = bridgePageLink;
-                }, 300);
-            });
-        }
+let time = 10;
+const timerTextTpl = "Will be redirecting in {n} seconds....";
+const countTxt = document.getElementById('countTxt');
 
-        // Page toggle helper for Privacy Policy / Terms pages
-        function showPage(pageId) {
-            const pages = ['main-landing', 'privacy-page', 'terms-page'];
-            pages.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.classList.toggle('hidden', id !== pageId);
-                }
-            });
-        }
-    </script>
-  
+function paintTimer() {
+  if (!countTxt) return;
+  countTxt.innerHTML = timerTextTpl.replace(
+    '{n}',
+    '<span style="color:#ffd700;font-weight:bold;">' + time + '</span>'
+  );
+}
+paintTimer();
+
+const countdown = setInterval(function () {
+  time--;
+  paintTimer();
+  if (time <= 0) {
+    clearInterval(countdown);
+    trackAndRedirect();
+  }
+}, 1000);
+
+document.getElementById('telegramBtn')?.addEventListener('click', trackAndRedirect);
+document.getElementById('stickyTelegramBtn')?.addEventListener('click', trackAndRedirect);
+</script>
+
 </body>
 </html>>>
